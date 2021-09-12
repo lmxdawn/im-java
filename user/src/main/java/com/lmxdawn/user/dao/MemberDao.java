@@ -1,0 +1,23 @@
+package com.lmxdawn.user.dao;
+
+import com.lmxdawn.user.entity.Member;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface MemberDao {
+
+    /**
+     * 根据uid查询
+     * @param uid
+     * @return
+     */
+    Member findByUid(Long uid);
+
+    /**
+     * 根据手机号查询
+     * @param tel
+     * @return
+     */
+    Member findByTel(String tel);
+
+}
