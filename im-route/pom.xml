@@ -5,7 +5,7 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>com.lmxdawn</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,13 +21,11 @@
         <dependency>
             <groupId>com.lmxdawn</groupId>
             <artifactId>dubbo-api</artifactId>
-            <version>${parent.version}</version>
         </dependency>
         <!-- im-common -->
         <dependency>
             <groupId>com.lmxdawn</groupId>
             <artifactId>im-common</artifactId>
-            <version>${parent.version}</version>
         </dependency>
         <!--Redis-->
         <dependency>

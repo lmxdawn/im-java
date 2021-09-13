@@ -16,8 +16,8 @@
         <module>im-route</module>
         <module>im-common</module>
     </modules>
-    <name>scum</name>
-    <description>渣男网项目</description>
+    <name>parent</name>
+    <description>IM项目</description>
 
     <properties>
         <!-- Project revision -->
@@ -27,6 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
         <spring-cloud-alibaba.version>2.2.6.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud.version>2020.0.3</spring-cloud.version>
         <springfox-boot.version>3.0.0</springfox-boot.version>
         <druid.version>1.2.6</druid.version>
         <mybatis.version>2.2.0</mybatis.version>
@@ -35,6 +36,7 @@
         <fastjson.version>1.2.76</fastjson.version>
         <netty.version>4.1.42.Final</netty.version>
         <okhttp.version>3.8.1</okhttp.version>
+        <apache-commons.version>3.12.0</apache-commons.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
 
@@ -54,6 +56,33 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--公共模块-->
+            <dependency>
+                <groupId>com.lmxdawn</groupId>
+                <artifactId>common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.lmxdawn</groupId>
+                <artifactId>dubbo-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.lmxdawn</groupId>
+                <artifactId>im-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
 
             <!--连接池-->
             <dependency>
@@ -107,6 +136,13 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.version}</version>
+            </dependency>
+
+            <!-- 工具包-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache-commons.version}</version>
             </dependency>
 
         </dependencies>

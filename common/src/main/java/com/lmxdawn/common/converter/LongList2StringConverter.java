@@ -1,6 +1,6 @@
 package com.lmxdawn.common.converter;
 
-import com.sun.deploy.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
