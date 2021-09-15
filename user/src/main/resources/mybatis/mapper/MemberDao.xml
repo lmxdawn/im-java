@@ -21,5 +21,17 @@
         LIMIT 1
     </select>
 
+    <insert id="insertMember" keyProperty="uid" parameterType="com.lmxdawn.user.entity.Member">
+        INSERT INTO `member`(tel,pwd,`name`,avatar,create_time,modified_time)
+        VALUES
+        (#{tel},
+         #{email},
+         #{pwd},
+         #{name},
+         #{avatar},
+         #{createTime},
+         #{modifiedTime})
+    </insert>
+
 
 </mapper>

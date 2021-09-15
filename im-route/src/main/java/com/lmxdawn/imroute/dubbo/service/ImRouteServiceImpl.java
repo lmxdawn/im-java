@@ -9,7 +9,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import static com.lmxdawn.common.constant.CacheConstant.IM_ROUTE_UIP;
+import static com.lmxdawn.common.constant.CacheConstant.IM_ROUTE_UID;
 
 @DubboService
 public class ImRouteServiceImpl implements ImRouteService {
@@ -30,7 +30,7 @@ public class ImRouteServiceImpl implements ImRouteService {
         connectionInfoRes.setIp(loadBalancingIpRes.getIp());
         connectionInfoRes.setHttpPort(loadBalancingIpRes.getHttpPort());
         connectionInfoRes.setWsPort(loadBalancingIpRes.getWsPort());
-        String key = IM_ROUTE_UIP + uid;
+        String key = IM_ROUTE_UID + uid;
 
         String value = JSON.toJSONString(connectionInfoRes);
         redisTemplate.opsForValue().set(key, value);
@@ -40,7 +40,7 @@ public class ImRouteServiceImpl implements ImRouteService {
 
     @Override
     public ConnectionInfoRes connectionInfo(Long uid) {
-        String key = IM_ROUTE_UIP + uid;
+        String key = IM_ROUTE_UID + uid;
         String value = redisTemplate.opsForValue().get(key);
         return JSON.parseObject(value, ConnectionInfoRes.class);
     }

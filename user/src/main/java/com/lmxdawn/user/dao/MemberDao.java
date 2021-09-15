@@ -20,4 +20,11 @@ public interface MemberDao {
      */
     Member findByTel(String tel);
 
+    /**
+     * 插入
+     * @param member
+     * @return
+     */
+    boolean insertMember(Member member);
+
 }

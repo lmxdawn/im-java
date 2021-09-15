@@ -6,4 +6,5 @@ public interface MemberService {
 
     Member findByUid(Long uid);
     Member findByTel(String tel);
+    boolean insertMember(Member member);
 }

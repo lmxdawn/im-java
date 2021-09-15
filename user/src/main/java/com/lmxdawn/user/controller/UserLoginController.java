@@ -8,7 +8,7 @@ import com.lmxdawn.user.entity.Member;
 import com.lmxdawn.user.req.UserLoginPwdReq;
 import com.lmxdawn.user.res.UserLoginTokenRes;
 import com.lmxdawn.user.service.MemberService;
-import com.lmxdawn.user.util.LoginUtils;
+import com.lmxdawn.user.service.UserLoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
@@ -28,6 +28,9 @@ public class UserLoginController {
     @Resource
     private MemberService memberService;
 
+    @Resource
+    private UserLoginService userLoginService;
+
     @ApiOperation(value = "密码登录")
     @PostMapping("/byPwd")
     public BaseResponse<UserLoginTokenRes> byPwd(@RequestBody @Valid UserLoginPwdReq userLoginPwdReq,
@@ -44,7 +47,7 @@ public class UserLoginController {
             return ResultVOUtils.error(ResultEnum.USER_LOGIN_PWD_ERR);
         }
 
-        String token = LoginUtils.createToken(byTel.getUid());
+        String token = userLoginService.createToken(byTel.getUid());
 
         UserLoginTokenRes userLoginTokenRes = new UserLoginTokenRes();
         userLoginTokenRes.setUid(byTel.getUid());

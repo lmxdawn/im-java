@@ -19,6 +19,7 @@ public enum ResultEnum {
 
     USER_LOGIN_PWD_ERR(10000, "Password error"), // 密码错误
     USER_MSG_ERR(10001, "Failed to send message"), // 密码错误
+    USER_REGISTER_TEL_EXISTS(10002, "Phone number already exists"), // 手机号已存在
 
     IM_ROUTE_USER_NOT(20000, "User is not logged in"), // 用户未登录
 
