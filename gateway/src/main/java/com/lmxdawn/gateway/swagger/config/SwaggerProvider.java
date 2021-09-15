@@ -18,7 +18,7 @@ import java.util.List;
 @Primary
 @Component
 public class SwaggerProvider implements SwaggerResourcesProvider {
-    public static final String API_URI = "v2/api-docs";
+    public static final String API_URI = "v3/api-docs";
 
     private final RouteLocator routeLocator;
 
