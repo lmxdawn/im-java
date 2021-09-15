@@ -9,7 +9,7 @@ git clone https://github.com/lmxdawn/im-java.git
 # 整体打包
 mvn -Dmaven.test.skip=true clean package
 # 单独打包某个模块，这里的 user 就是模块名称
-mvn install -Dmaven.test.skip=true -pl user -am
+mvn -Dmaven.test.skip=true -pl user -am clean package
 
 # 运行
 nohup java -jar -Dspring.profiles.active=prod admin/target/admin-0.0.1-SNAPSHOT.jar &
