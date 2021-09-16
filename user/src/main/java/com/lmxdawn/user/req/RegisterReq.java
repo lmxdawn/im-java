@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 
 @ApiModel
 @Data
-public class UserRegisterReq {
+public class RegisterReq {
 
     @ApiModelProperty(value = "手机号", required = true)
     @NotBlank(message = "Phone cannot be empty")

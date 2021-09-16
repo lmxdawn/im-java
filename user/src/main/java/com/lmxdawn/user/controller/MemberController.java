@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "用户")
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/member")
+public class MemberController {
 
     @Resource
     private ImService imService;

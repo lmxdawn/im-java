@@ -5,7 +5,7 @@ import com.lmxdawn.common.res.BaseResponse;
 import com.lmxdawn.common.util.PasswordUtils;
 import com.lmxdawn.common.util.ResultVOUtils;
 import com.lmxdawn.user.entity.Member;
-import com.lmxdawn.user.req.UserRegisterReq;
+import com.lmxdawn.user.req.RegisterReq;
 import com.lmxdawn.user.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 @Api(tags = "用户注册")
 @RestController
 @RequestMapping("/register")
-public class UserRegisterController {
+public class RegisterController {
 
     @Resource
     private MemberService memberService;
@@ -29,7 +29,7 @@ public class UserRegisterController {
     @ApiOperation(value = "手机号注册")
     @PostMapping("/byTel")
     public BaseResponse registerByTel(
-            @RequestBody @Validated UserRegisterReq userRegisterReq,
+            @RequestBody @Validated RegisterReq registerReq,
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -38,7 +38,7 @@ public class UserRegisterController {
 
         // TODO：验证手机验证码
 
-        String tel = userRegisterReq.getTel();
+        String tel = registerReq.getTel();
         Member byTel = memberService.findByTel(tel);
         if (byTel != null) {
             return ResultVOUtils.error(ResultEnum.USER_REGISTER_TEL_EXISTS);
@@ -46,8 +46,8 @@ public class UserRegisterController {
 
         Member member = new Member();
         member.setTel(tel);
-        member.setName(userRegisterReq.getName());
-        member.setPwd(PasswordUtils.memberPwd(userRegisterReq.getPwd()));
+        member.setName(registerReq.getName());
+        member.setPwd(PasswordUtils.memberPwd(registerReq.getPwd()));
 
         memberService.insertMember(member);
 

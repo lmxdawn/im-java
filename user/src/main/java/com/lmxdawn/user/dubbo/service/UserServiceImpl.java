@@ -4,7 +4,7 @@ import com.lmxdawn.dubboapi.res.MemberInfo;
 import com.lmxdawn.dubboapi.service.UserService;
 import com.lmxdawn.user.entity.Member;
 import com.lmxdawn.user.service.MemberService;
-import com.lmxdawn.user.service.UserLoginService;
+import com.lmxdawn.user.service.LoginService;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.BeanUtils;
 
@@ -17,11 +17,11 @@ public class UserServiceImpl implements UserService {
     private MemberService memberService;
 
     @Resource
-    private UserLoginService userLoginService;
+    private LoginService loginService;
 
     @Override
     public Long Login(String token) {
-        return userLoginService.verify(token);
+        return loginService.verify(token);
     }
 
     @Override

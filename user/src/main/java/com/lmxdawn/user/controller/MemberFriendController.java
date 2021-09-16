@@ -24,8 +24,8 @@ import javax.validation.Valid;
 
 @Api(tags = "用户好友")
 @RestController
-@RequestMapping("/user-friend")
-public class UserFriendController {
+@RequestMapping("/member-friend")
+public class MemberFriendController {
 
     @Resource
     private MemberService memberService;

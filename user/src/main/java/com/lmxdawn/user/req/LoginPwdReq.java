@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 
 @ApiModel
 @Data
-public class UserLoginPwdReq {
+public class LoginPwdReq {
 
     // 用户手机
     @ApiModelProperty(value = "手机号")

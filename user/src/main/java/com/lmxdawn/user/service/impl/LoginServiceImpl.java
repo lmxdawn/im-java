@@ -1,7 +1,7 @@
 package com.lmxdawn.user.service.impl;
 
 import com.lmxdawn.common.util.JwtUtils;
-import com.lmxdawn.user.service.UserLoginService;
+import com.lmxdawn.user.service.LoginService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.lmxdawn.common.constant.CacheConstant.USER_LOGIN;
 
 @Service
-public class UserLoginServiceImpl implements UserLoginService {
+public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -25,6 +25,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         if (token == null || token.isEmpty()) {
             Map<String, Object> claims = new HashMap<>();
             claims.put("uid", uid);
+            claims.put("t", System.currentTimeMillis());
             token = JwtUtils.createToken(claims);
             redisTemplate.opsForValue().set(key, token);
         }
@@ -51,9 +52,17 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         String key = String.format(USER_LOGIN, uid);
         String s = redisTemplate.opsForValue().get(key);
-        if (s == null || s.isEmpty()) {
+        System.out.println(s);
+        System.out.println(token);
+        if (s == null || s.isEmpty() || !s.equals(token)) {
             return null;
         }
         return uid;
+    }
+
+    @Override
+    public void delete(Long uid) {
+        String key = String.format(USER_LOGIN, uid);
+        redisTemplate.delete(key);
     }
 }
