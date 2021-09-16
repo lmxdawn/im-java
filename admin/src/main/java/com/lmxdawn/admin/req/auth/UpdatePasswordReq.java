@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class UpdatePasswordRequest {
+public class UpdatePasswordReq {
 
     @NotNull(message = "参数错误！")
     @ApiModelProperty(value = "管理员ID", required = true)

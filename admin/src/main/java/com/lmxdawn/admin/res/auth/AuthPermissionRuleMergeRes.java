@@ -11,7 +11,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class AuthPermissionRuleMergeResponse {
+public class AuthPermissionRuleMergeRes {
 
     @ApiModelProperty(value = "ID")
     private Long id;
@@ -29,6 +29,6 @@ public class AuthPermissionRuleMergeResponse {
     private Long listorder;
 
     // 一次性加载所有权限规则生成 tree 树形节点时需要
-    private List<AuthPermissionRuleMergeResponse> children;
+    private List<AuthPermissionRuleMergeRes> children;
 
 }

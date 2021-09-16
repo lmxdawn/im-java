@@ -11,7 +11,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class LoginUserInfoResponse {
+public class LoginUserInfoRes {
     @ApiModelProperty(value = "用户ID")
     private Long id;
     @ApiModelProperty(value = "用户名")

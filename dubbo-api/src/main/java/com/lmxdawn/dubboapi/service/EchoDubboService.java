@@ -3,7 +3,7 @@ package com.lmxdawn.dubboapi.service;
 /**
  * Echo Service.
  */
-public interface EchoService {
+public interface EchoDubboService {
 
     String echo(String message);
 

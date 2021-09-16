@@ -3,7 +3,7 @@ package com.lmxdawn.admin.service.auth.impl;
 import com.github.pagehelper.PageHelper;
 import com.lmxdawn.admin.dao.auth.AuthRoleDao;
 import com.lmxdawn.admin.entity.auth.AuthRole;
-import com.lmxdawn.admin.req.auth.AuthRoleQueryRequest;
+import com.lmxdawn.admin.req.auth.AuthRoleQueryReq;
 import com.lmxdawn.admin.service.auth.AuthRoleService;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class AuthRoleServiceImpl implements AuthRoleService {
      * @return
      */
     @Override
-    public List<AuthRole> listAdminPage(AuthRoleQueryRequest authRoleQueryRequest) {
+    public List<AuthRole> listAdminPage(AuthRoleQueryReq authRoleQueryRequest) {
         int offset = (authRoleQueryRequest.getPage() - 1) * authRoleQueryRequest.getLimit();
         PageHelper.offsetPage(offset, authRoleQueryRequest.getLimit());
         List<AuthRole> list = authRoleDao.listAdminPage(authRoleQueryRequest);

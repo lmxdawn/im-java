@@ -1,6 +1,6 @@
 package com.lmxdawn.admin.req.auth;
 
-import com.lmxdawn.admin.req.ListPageRequest;
+import com.lmxdawn.admin.req.ListPageReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 @ApiModel
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AuthAdminQueryRequest extends ListPageRequest {
+public class AuthAdminQueryReq extends ListPageReq {
 
     @ApiModelProperty(value = "用户名")
     private String username;

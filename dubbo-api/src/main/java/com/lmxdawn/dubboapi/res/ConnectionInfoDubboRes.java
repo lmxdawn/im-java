@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 连接信息
  */
 @Data
-public class ConnectionInfoRes implements Serializable {
+public class ConnectionInfoDubboRes implements Serializable {
     // ip地址
     private String ip;
 

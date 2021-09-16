@@ -3,7 +3,7 @@
 
 <mapper namespace="com.lmxdawn.admin.dao.auth.AuthAdminDao">
 
-    <select id="listAdminPage" parameterType="com.lmxdawn.admin.req.auth.AuthAdminQueryRequest" resultType="com.lmxdawn.admin.entity.auth.AuthAdmin">
+    <select id="listAdminPage" parameterType="com.lmxdawn.admin.req.auth.AuthAdminQueryReq" resultType="com.lmxdawn.admin.entity.auth.AuthAdmin">
         SELECT id,username,avatar,tel,email,status,last_login_ip,last_login_time,create_time
         FROM auth_admin
         <where>

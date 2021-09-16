@@ -2,7 +2,7 @@ package com.lmxdawn.admin.controller.file;
 
 import com.lmxdawn.common.res.BaseResponse;
 import com.lmxdawn.common.util.ResultVOUtils;
-import com.lmxdawn.dubboapi.service.EchoService;
+import com.lmxdawn.dubboapi.service.EchoDubboService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class UploadController {
 
     @DubboReference
-    private EchoService echoService;
+    private EchoDubboService echoDubboService;
 
     /**
      * 上传的token
@@ -64,7 +64,7 @@ public class UploadController {
     @PostMapping("/test")
     public BaseResponse test() {
 
-        String test = echoService.echo("test");
+        String test = echoDubboService.echo("test");
 
         return ResultVOUtils.success(test);
     }

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.lmxdawn.admin.dao.auth.AuthRoleDao">
 
-    <select id="listAdminPage" parameterType="com.lmxdawn.admin.req.auth.AuthRoleQueryRequest"
+    <select id="listAdminPage" parameterType="com.lmxdawn.admin.req.auth.AuthRoleQueryReq"
             resultType="com.lmxdawn.admin.entity.auth.AuthRole">
         SELECT id,name,status,remark,create_time,listorder
         FROM auth_role

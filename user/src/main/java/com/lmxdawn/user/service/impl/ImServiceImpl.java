@@ -1,8 +1,8 @@
 package com.lmxdawn.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.lmxdawn.dubboapi.res.ConnectionInfoRes;
-import com.lmxdawn.dubboapi.service.ImRouteService;
+import com.lmxdawn.dubboapi.res.ConnectionInfoDubboRes;
+import com.lmxdawn.dubboapi.service.ImRouteDubboService;
 import com.lmxdawn.imcommon.req.ImMsgReq;
 import com.lmxdawn.user.service.ImService;
 import com.lmxdawn.user.util.OkHttpUtil;
@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class ImServiceImpl implements ImService {
 
     @DubboReference
-    private ImRouteService imRouteService;
+    private ImRouteDubboService imRouteDubboService;
 
     @Override
     public boolean pushMsg(Long uid, ImMsgReq imMsgReq) {
 
-        ConnectionInfoRes connectionInfoRes = imRouteService.connectionInfo(uid);
-        if (connectionInfoRes == null || "".equals(connectionInfoRes.getIp()) || "".equals(connectionInfoRes.getHttpPort())) {
+        ConnectionInfoDubboRes connectionInfoDubboRes = imRouteDubboService.connectionInfo(uid);
+        if (connectionInfoDubboRes == null || "".equals(connectionInfoDubboRes.getIp()) || "".equals(connectionInfoDubboRes.getHttpPort())) {
             return false;
         }
-        String url = "http://" + connectionInfoRes.getIp() + ":" + connectionInfoRes.getHttpPort() + "/msg/push";
+        String url = "http://" + connectionInfoDubboRes.getIp() + ":" + connectionInfoDubboRes.getHttpPort() + "/msg/push";
         String json = JSON.toJSONString(imMsgReq);
         String s = OkHttpUtil.postJson(url, json);
 
@@ -31,7 +31,7 @@ public class ImServiceImpl implements ImService {
     }
 
     @Override
-    public ConnectionInfoRes connectionInfo(Long uid) {
-        return imRouteService.connectionLogin(uid);
+    public ConnectionInfoDubboRes connectionInfo(Long uid) {
+        return imRouteDubboService.connectionLogin(uid);
     }
 }

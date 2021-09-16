@@ -13,7 +13,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class AuthRoleAuthRequest {
+public class AuthRoleAuthReq {
     @NotNull(message = "请选择角色")
     @ApiModelProperty(value = "角色ID", required = true)
     private Long roleId;

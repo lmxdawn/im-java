@@ -2,15 +2,15 @@ package com.lmxdawn.admin.controller.auth;
 
 import com.lmxdawn.admin.annotation.AuthRuleAnnotation;
 import com.lmxdawn.admin.entity.auth.AuthAdmin;
-import com.lmxdawn.admin.res.auth.LoginResponse;
+import com.lmxdawn.admin.res.auth.LoginRes;
 import com.lmxdawn.common.enums.ResultEnum;
 import com.lmxdawn.common.exception.JsonException;
-import com.lmxdawn.admin.req.auth.LoginRequest;
-import com.lmxdawn.admin.req.auth.UpdatePasswordRequest;
+import com.lmxdawn.admin.req.auth.LoginReq;
+import com.lmxdawn.admin.req.auth.UpdatePasswordReq;
 import com.lmxdawn.admin.service.auth.AuthAdminService;
 import com.lmxdawn.admin.service.auth.AuthLoginService;
 import com.lmxdawn.common.util.PasswordUtils;
-import com.lmxdawn.admin.res.auth.LoginUserInfoResponse;
+import com.lmxdawn.admin.res.auth.LoginUserInfoRes;
 import com.lmxdawn.common.util.IpUtils;
 import com.lmxdawn.common.util.JwtUtils;
 import com.lmxdawn.common.util.ResultVOUtils;
@@ -50,19 +50,19 @@ public class LoginController {
      */
     @ApiOperation(value = "用户登录")
     @PostMapping(value = "/auth/login/index")
-    public BaseResponse<LoginResponse> index(@RequestBody @Valid LoginRequest loginRequest,
-                              BindingResult bindingResult,
-                              HttpServletRequest request) {
+    public BaseResponse<LoginRes> index(@RequestBody @Valid LoginReq loginReq,
+                                        BindingResult bindingResult,
+                                        HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
-        AuthAdmin authAdmin = authAdminService.findByUserName(loginRequest.getUserName());
+        AuthAdmin authAdmin = authAdminService.findByUserName(loginReq.getUserName());
         if (authAdmin == null) {
             throw new JsonException(ResultEnum.DATA_NOT, "用户名或密码错误");
         }
 
-        if (!PasswordUtils.authAdminPwd(loginRequest.getPwd()).equals(authAdmin.getPassword())) {
+        if (!PasswordUtils.authAdminPwd(loginReq.getPwd()).equals(authAdmin.getPassword())) {
             throw new JsonException(ResultEnum.DATA_NOT, "用户名或密码错误");
         }
 
@@ -80,11 +80,11 @@ public class LoginController {
         claims.put("admin_id", authAdmin.getId());
         String token = JwtUtils.createToken(claims, 86400L); // 一天后过期
 
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setId(authAdmin.getId());
-        loginResponse.setToken(token);
+        LoginRes loginRes = new LoginRes();
+        loginRes.setId(authAdmin.getId());
+        loginRes.setToken(token);
 
-        return ResultVOUtils.success(loginResponse);
+        return ResultVOUtils.success(loginRes);
     }
 
     /**
@@ -94,18 +94,18 @@ public class LoginController {
     @ApiOperation(value = "获取用户信息")
     @AuthRuleAnnotation("")
     @GetMapping("/auth/login/userInfo")
-    public BaseResponse<LoginUserInfoResponse> userInfo(HttpServletRequest request) {
+    public BaseResponse<LoginUserInfoRes> userInfo(HttpServletRequest request) {
         Long id = (Long) request.getAttribute("admin_id");
 
         AuthAdmin authAdmin = authAdminService.findById(id);
 
         List<String> authRules = authLoginService.listRuleByAdminId(authAdmin.getId());
 
-        LoginUserInfoResponse loginUserInfoResponse = new LoginUserInfoResponse();
-        BeanUtils.copyProperties(authAdmin, loginUserInfoResponse);
-        loginUserInfoResponse.setAuthRules(authRules);
+        LoginUserInfoRes loginUserInfoRes = new LoginUserInfoRes();
+        BeanUtils.copyProperties(authAdmin, loginUserInfoRes);
+        loginUserInfoRes.setAuthRules(authRules);
 
-        return ResultVOUtils.success(loginUserInfoResponse);
+        return ResultVOUtils.success(loginUserInfoRes);
     }
 
     /**
@@ -125,18 +125,18 @@ public class LoginController {
     @ApiOperation(value = "修改密码")
     @AuthRuleAnnotation("") // 需要登录验证,但是不需要权限验证时,value 值填空字符串
     @PostMapping("/auth/login/password")
-    public BaseResponse password(@RequestBody @Valid UpdatePasswordRequest updatePasswordRequest,
+    public BaseResponse password(@RequestBody @Valid UpdatePasswordReq updatePasswordReq,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
         }
 
-        AuthAdmin authAdmin = authAdminService.findPwdById(updatePasswordRequest.getAdminId());
+        AuthAdmin authAdmin = authAdminService.findPwdById(updatePasswordReq.getAdminId());
         if (authAdmin == null) {
             throw new JsonException(ResultEnum.DATA_NOT);
         }
-        String oldPwd = PasswordUtils.authAdminPwd(updatePasswordRequest.getOldPassword());
+        String oldPwd = PasswordUtils.authAdminPwd(updatePasswordReq.getOldPassword());
         // 旧密码不对
         if (authAdmin.getPassword() != null
                 && !authAdmin.getPassword().equals(oldPwd)) {
@@ -145,7 +145,7 @@ public class LoginController {
 
         AuthAdmin authAdminUp = new AuthAdmin();
         authAdminUp.setId(authAdmin.getId());
-        String newPwd = PasswordUtils.authAdminPwd(updatePasswordRequest.getNewPassword());
+        String newPwd = PasswordUtils.authAdminPwd(updatePasswordReq.getNewPassword());
         authAdminUp.setPassword(newPwd);
 
         boolean b = authAdminService.updateAuthAdmin(authAdminUp);

@@ -13,7 +13,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class AuthAdminSaveRequest {
+public class AuthAdminSaveReq {
     // id
     @ApiModelProperty(value = "用户ID")
     private Long id;

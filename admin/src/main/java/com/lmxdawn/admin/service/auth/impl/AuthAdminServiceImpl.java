@@ -5,7 +5,7 @@ import com.lmxdawn.admin.dao.auth.AuthAdminDao;
 import com.lmxdawn.admin.entity.auth.AuthAdmin;
 import com.lmxdawn.common.enums.ResultEnum;
 import com.lmxdawn.common.exception.JsonException;
-import com.lmxdawn.admin.req.auth.AuthAdminQueryRequest;
+import com.lmxdawn.admin.req.auth.AuthAdminQueryReq;
 import com.lmxdawn.admin.service.auth.AuthAdminService;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class AuthAdminServiceImpl implements AuthAdminService {
     private AuthAdminDao authAdminDao;
 
     @Override
-    public List<AuthAdmin> listAdminPage(AuthAdminQueryRequest authAdminQueryRequest) {
+    public List<AuthAdmin> listAdminPage(AuthAdminQueryReq authAdminQueryRequest) {
         if (authAdminQueryRequest == null) {
             return Collections.emptyList();
         }

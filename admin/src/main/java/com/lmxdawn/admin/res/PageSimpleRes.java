@@ -11,7 +11,7 @@ import java.util.List;
  */
 @ApiModel
 @Data
-public class PageSimpleResponse<T> {
+public class PageSimpleRes<T> {
     // 总数
     @ApiModelProperty(value = "分页总数")
     private Long total;

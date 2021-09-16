@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class ListPageRequest {
+public class ListPageReq {
 
     @NotNull(message = "请选择第几页")
     @Min(message = "分页参数错误", value = 1)

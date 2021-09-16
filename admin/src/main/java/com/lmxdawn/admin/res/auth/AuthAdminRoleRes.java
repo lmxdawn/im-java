@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @ApiModel
 @Data
-public class AuthAdminRoleResponse {
+public class AuthAdminRoleRes {
 
     @ApiModelProperty(value = "ID")
     private Long id;

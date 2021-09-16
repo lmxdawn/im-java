@@ -6,17 +6,17 @@ import com.lmxdawn.admin.entity.auth.AuthPermission;
 import com.lmxdawn.admin.entity.auth.AuthPermissionRule;
 import com.lmxdawn.admin.entity.auth.AuthRole;
 import com.lmxdawn.common.enums.ResultEnum;
-import com.lmxdawn.admin.req.auth.AuthRoleAuthRequest;
-import com.lmxdawn.admin.req.auth.AuthRoleQueryRequest;
-import com.lmxdawn.admin.req.auth.AuthRoleSaveRequest;
+import com.lmxdawn.admin.req.auth.AuthRoleAuthReq;
+import com.lmxdawn.admin.req.auth.AuthRoleQueryReq;
+import com.lmxdawn.admin.req.auth.AuthRoleSaveReq;
 import com.lmxdawn.admin.service.auth.AuthPermissionRuleService;
 import com.lmxdawn.admin.service.auth.AuthPermissionService;
 import com.lmxdawn.admin.service.auth.AuthRoleService;
 import com.lmxdawn.admin.util.PermissionRuleTreeUtils;
-import com.lmxdawn.admin.res.PageSimpleResponse;
+import com.lmxdawn.admin.res.PageSimpleRes;
 import com.lmxdawn.common.res.BaseResponse;
-import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeResponse;
-import com.lmxdawn.admin.res.auth.AuthRoleResponse;
+import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeRes;
+import com.lmxdawn.admin.res.auth.AuthRoleRes;
 import com.lmxdawn.common.util.ResultVOUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -54,25 +54,25 @@ public class AuthRoleController {
     @ApiOperation(value = "角色列表")
     @AuthRuleAnnotation("auth/role/index")
     @GetMapping("/auth/role/index")
-    public BaseResponse<PageSimpleResponse<AuthRoleResponse>> index(@Valid AuthRoleQueryRequest authRoleQueryRequest,
-                              BindingResult bindingResult) {
+    public BaseResponse<PageSimpleRes<AuthRoleRes>> index(@Valid AuthRoleQueryReq authRoleQueryRequest,
+                                                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
         List<AuthRole> authRoleList = authRoleService.listAdminPage(authRoleQueryRequest);
-        List<AuthRoleResponse> authRoleResponseList = authRoleList.stream().map(item -> {
-            AuthRoleResponse authRoleResponse = new AuthRoleResponse();
-            BeanUtils.copyProperties(item, authRoleResponse);
-            return authRoleResponse;
+        List<AuthRoleRes> authRoleResList = authRoleList.stream().map(item -> {
+            AuthRoleRes authRoleRes = new AuthRoleRes();
+            BeanUtils.copyProperties(item, authRoleRes);
+            return authRoleRes;
         }).collect(Collectors.toList());
 
         PageInfo<AuthRole> pageInfo = new PageInfo<>(authRoleList);
-        PageSimpleResponse<AuthRoleResponse> pageSimpleResponse = new PageSimpleResponse<>();
-        pageSimpleResponse.setTotal(pageInfo.getTotal());
-        pageSimpleResponse.setList(authRoleResponseList);
-        return ResultVOUtils.success(pageSimpleResponse);
+        PageSimpleRes<AuthRoleRes> pageSimpleRes = new PageSimpleRes<>();
+        pageSimpleRes.setTotal(pageInfo.getTotal());
+        pageSimpleRes.setList(authRoleResList);
+        return ResultVOUtils.success(pageSimpleRes);
     }
 
     /**
@@ -95,7 +95,7 @@ public class AuthRoleController {
 
         // 查询所有权限规则
         List<AuthPermissionRule> authPermissionRuleList = authPermissionRuleService.listAll();
-        List<AuthPermissionRuleMergeResponse> merge = PermissionRuleTreeUtils.merge(authPermissionRuleList, 0L);
+        List<AuthPermissionRuleMergeRes> merge = PermissionRuleTreeUtils.merge(authPermissionRuleList, 0L);
 
         Map<String, Object> restMap = new HashMap<>();
         restMap.put("list", merge);
@@ -105,14 +105,14 @@ public class AuthRoleController {
 
     /**
      * 授权
-     * @param authRoleAuthRequest
+     * @param authRoleAuthReq
      * @param bindingResult
      * @return
      */
     @ApiOperation(value = "授权")
     @AuthRuleAnnotation("auth/role/auth")
     @PostMapping("/auth/role/auth")
-    public BaseResponse auth(@RequestBody @Valid AuthRoleAuthRequest authRoleAuthRequest,
+    public BaseResponse auth(@RequestBody @Valid AuthRoleAuthReq authRoleAuthReq,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -120,12 +120,12 @@ public class AuthRoleController {
         }
 
         // 先删除之前的授权
-        authPermissionService.deleteByRoleId(authRoleAuthRequest.getRoleId());
+        authPermissionService.deleteByRoleId(authRoleAuthReq.getRoleId());
 
-        List<AuthPermission> authPermissionList = authRoleAuthRequest.getAuthRules().stream()
+        List<AuthPermission> authPermissionList = authRoleAuthReq.getAuthRules().stream()
                 .map(aLong -> {
                     AuthPermission authPermission = new AuthPermission();
-                    authPermission.setRoleId(authRoleAuthRequest.getRoleId());
+                    authPermission.setRoleId(authRoleAuthReq.getRoleId());
                     authPermission.setPermissionRuleId(aLong);
                     authPermission.setType("admin");
                     return authPermission;
@@ -139,27 +139,27 @@ public class AuthRoleController {
     /**
      * 新增
      *
-     * @param authRoleSaveRequest
+     * @param authRoleSaveReq
      * @param bindingResult
      * @return
      */
     @ApiOperation(value = "新增角色")
     @AuthRuleAnnotation("auth/role/save")
     @PostMapping("/auth/role/save")
-    public BaseResponse save(@RequestBody @Valid AuthRoleSaveRequest authRoleSaveRequest,
+    public BaseResponse save(@RequestBody @Valid AuthRoleSaveReq authRoleSaveReq,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
-        AuthRole byName = authRoleService.findByName(authRoleSaveRequest.getName());
+        AuthRole byName = authRoleService.findByName(authRoleSaveReq.getName());
         if (byName != null) {
             return ResultVOUtils.error(ResultEnum.DATA_REPEAT, "当前角色已存在");
         }
 
         AuthRole authRole = new AuthRole();
-        BeanUtils.copyProperties(authRoleSaveRequest, authRole);
+        BeanUtils.copyProperties(authRoleSaveReq, authRole);
 
         boolean b = authRoleService.insertAuthRole(authRole);
         if (!b) {
@@ -174,32 +174,32 @@ public class AuthRoleController {
     /**
      * 编辑
      *
-     * @param authRoleSaveRequest
+     * @param authRoleSaveReq
      * @param bindingResult
      * @return
      */
     @ApiOperation(value = "编辑角色")
     @AuthRuleAnnotation("auth/role/edit")
     @PostMapping("/auth/role/edit")
-    public BaseResponse edit(@RequestBody @Valid AuthRoleSaveRequest authRoleSaveRequest,
+    public BaseResponse edit(@RequestBody @Valid AuthRoleSaveReq authRoleSaveReq,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
-        if (authRoleSaveRequest.getId() == null) {
+        if (authRoleSaveReq.getId() == null) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL);
         }
 
         // 检查是否存在当前角色
-        AuthRole byName = authRoleService.findByName(authRoleSaveRequest.getName());
-        if (byName != null && !authRoleSaveRequest.getId().equals(byName.getId())) {
+        AuthRole byName = authRoleService.findByName(authRoleSaveReq.getName());
+        if (byName != null && !authRoleSaveReq.getId().equals(byName.getId())) {
             return ResultVOUtils.error(ResultEnum.DATA_REPEAT, "当前角色已存在");
         }
 
         AuthRole authRole = new AuthRole();
-        BeanUtils.copyProperties(authRoleSaveRequest, authRole);
+        BeanUtils.copyProperties(authRoleSaveReq, authRole);
 
         boolean b = authRoleService.updateAuthRole(authRole);
         if (!b) {
@@ -212,19 +212,19 @@ public class AuthRoleController {
     /**
      * 删除
      *
-     * @param authRoleSaveRequest
+     * @param authRoleSaveReq
      * @return
      */
     @ApiOperation(value = "删除角色")
     @AuthRuleAnnotation("auth/role/delete")
     @PostMapping("/auth/role/delete")
-    public BaseResponse delete(@RequestBody AuthRoleSaveRequest authRoleSaveRequest) {
+    public BaseResponse delete(@RequestBody AuthRoleSaveReq authRoleSaveReq) {
 
-        if (authRoleSaveRequest.getId() == null) {
+        if (authRoleSaveReq.getId() == null) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL);
         }
 
-        boolean b = authRoleService.deleteById(authRoleSaveRequest.getId());
+        boolean b = authRoleService.deleteById(authRoleSaveReq.getId());
         if (!b) {
             return ResultVOUtils.error(ResultEnum.NOT_NETWORK);
         }
@@ -232,7 +232,7 @@ public class AuthRoleController {
         //TODO 删除角色后先前授权的缓存不会消失
 
         // 再删除之前的授权
-        authPermissionService.deleteByRoleId(authRoleSaveRequest.getId());
+        authPermissionService.deleteByRoleId(authRoleSaveReq.getId());
 
         return ResultVOUtils.success();
     }

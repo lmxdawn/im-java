@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @ApiModel
 @Data
-public class AuthRoleSaveRequest {
+public class AuthRoleSaveReq {
     @ApiModelProperty(value = "权限ID")
     private Long id;
     @NotEmpty(message = "请输入权限名")

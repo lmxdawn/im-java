@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @ApiModel()
 @Data
-public class LoginRequest {
+public class LoginReq {
 
     @NotEmpty(message = "用户名不能为空")
     @ApiModelProperty(value = "用户名", required = true)

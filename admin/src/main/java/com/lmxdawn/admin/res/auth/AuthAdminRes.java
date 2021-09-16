@@ -14,7 +14,7 @@ import java.util.List;
 @ApiModel
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL) // 如果加该注解的字段为null,那么就不序列化这个字段
-public class AuthAdminResponse {
+public class AuthAdminRes {
 
     // 主键
     @ApiModelProperty(value = "管理员ID")

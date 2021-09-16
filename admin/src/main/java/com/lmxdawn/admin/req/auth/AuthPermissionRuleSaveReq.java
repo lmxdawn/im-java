@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel
 @Data
-public class AuthPermissionRuleSaveRequest {
+public class AuthPermissionRuleSaveReq {
     @ApiModelProperty(value = "ID")
     private Long id;
     @ApiModelProperty(value = "父级ID")

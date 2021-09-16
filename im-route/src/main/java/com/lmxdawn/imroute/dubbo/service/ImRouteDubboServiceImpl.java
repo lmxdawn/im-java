@@ -1,8 +1,8 @@
 package com.lmxdawn.imroute.dubbo.service;
 
 import com.alibaba.fastjson.JSON;
-import com.lmxdawn.dubboapi.res.ConnectionInfoRes;
-import com.lmxdawn.dubboapi.service.ImRouteService;
+import com.lmxdawn.dubboapi.res.ConnectionInfoDubboRes;
+import com.lmxdawn.dubboapi.service.ImRouteDubboService;
 import com.lmxdawn.imroute.res.LoadBalancingIpRes;
 import com.lmxdawn.imroute.service.LoadBalancingService;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import static com.lmxdawn.common.constant.CacheConstant.IM_ROUTE_UID;
 
 @DubboService
-public class ImRouteServiceImpl implements ImRouteService {
+public class ImRouteDubboServiceImpl implements ImRouteDubboService {
 
     @Autowired
     private LoadBalancingService loadBalancingService;
@@ -21,27 +21,27 @@ public class ImRouteServiceImpl implements ImRouteService {
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public ConnectionInfoRes connectionLogin(Long uid) {
+    public ConnectionInfoDubboRes connectionLogin(Long uid) {
 
-        ConnectionInfoRes connectionInfoRes = new ConnectionInfoRes();
+        ConnectionInfoDubboRes connectionInfoDubboRes = new ConnectionInfoDubboRes();
 
         // 负载均衡
         LoadBalancingIpRes loadBalancingIpRes = loadBalancingService.imIpHash(uid);
-        connectionInfoRes.setIp(loadBalancingIpRes.getIp());
-        connectionInfoRes.setHttpPort(loadBalancingIpRes.getHttpPort());
-        connectionInfoRes.setWsPort(loadBalancingIpRes.getWsPort());
+        connectionInfoDubboRes.setIp(loadBalancingIpRes.getIp());
+        connectionInfoDubboRes.setHttpPort(loadBalancingIpRes.getHttpPort());
+        connectionInfoDubboRes.setWsPort(loadBalancingIpRes.getWsPort());
         String key = IM_ROUTE_UID + uid;
 
-        String value = JSON.toJSONString(connectionInfoRes);
+        String value = JSON.toJSONString(connectionInfoDubboRes);
         redisTemplate.opsForValue().set(key, value);
 
-        return connectionInfoRes;
+        return connectionInfoDubboRes;
     }
 
     @Override
-    public ConnectionInfoRes connectionInfo(Long uid) {
+    public ConnectionInfoDubboRes connectionInfo(Long uid) {
         String key = IM_ROUTE_UID + uid;
         String value = redisTemplate.opsForValue().get(key);
-        return JSON.parseObject(value, ConnectionInfoRes.class);
+        return JSON.parseObject(value, ConnectionInfoDubboRes.class);
     }
 }

@@ -2,7 +2,7 @@ package com.lmxdawn.user.controller;
 
 import com.lmxdawn.common.res.BaseResponse;
 import com.lmxdawn.common.util.ResultVOUtils;
-import com.lmxdawn.dubboapi.res.ConnectionInfoRes;
+import com.lmxdawn.dubboapi.res.ConnectionInfoDubboRes;
 import com.lmxdawn.user.annotation.LoginAuthAnnotation;
 import com.lmxdawn.user.service.ImService;
 import io.swagger.annotations.Api;
@@ -25,12 +25,12 @@ public class MemberController {
     @ApiOperation(value = "获取ws连接信息")
     @PostMapping("/wsConnectionInfo")
     @LoginAuthAnnotation
-    public BaseResponse<ConnectionInfoRes> connectionInfo(HttpServletRequest request) {
+    public BaseResponse<ConnectionInfoDubboRes> connectionInfo(HttpServletRequest request) {
 
         Long uid = (Long) request.getAttribute("uid");
-        ConnectionInfoRes connectionInfoRes = imService.connectionInfo(uid);
+        ConnectionInfoDubboRes connectionInfoDubboRes = imService.connectionInfo(uid);
 
-        return ResultVOUtils.success(connectionInfoRes);
+        return ResultVOUtils.success(connectionInfoDubboRes);
     }
 
 

@@ -3,11 +3,11 @@ package com.lmxdawn.admin.controller.auth;
 import com.lmxdawn.admin.annotation.AuthRuleAnnotation;
 import com.lmxdawn.admin.entity.auth.AuthPermissionRule;
 import com.lmxdawn.common.enums.ResultEnum;
-import com.lmxdawn.admin.req.auth.AuthPermissionRuleSaveRequest;
+import com.lmxdawn.admin.req.auth.AuthPermissionRuleSaveReq;
 import com.lmxdawn.admin.service.auth.AuthPermissionRuleService;
 import com.lmxdawn.admin.util.PermissionRuleTreeUtils;
 import com.lmxdawn.common.res.BaseResponse;
-import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeResponse;
+import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeRes;
 import com.lmxdawn.common.util.ResultVOUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,11 +38,11 @@ public class AuthPermissionRuleController {
     @ApiOperation(value = "权限规则列表")
     @AuthRuleAnnotation("auth/permission_rule/index")
     @GetMapping("/auth/permission_rule/index")
-    public BaseResponse<List<AuthPermissionRuleMergeResponse>> index() {
+    public BaseResponse<List<AuthPermissionRuleMergeRes>> index() {
 
 
         List<AuthPermissionRule> authPermissionRuleList = authPermissionRuleService.listAll();
-        List<AuthPermissionRuleMergeResponse> merge = PermissionRuleTreeUtils.merge(authPermissionRuleList,0L);
+        List<AuthPermissionRuleMergeRes> merge = PermissionRuleTreeUtils.merge(authPermissionRuleList,0L);
 
         Map<String,Object> restMap = new HashMap<>();
         restMap.put("list", merge);
@@ -51,25 +51,25 @@ public class AuthPermissionRuleController {
 
     /**
      * 新增
-     * @param authPermissionRuleSaveRequest
+     * @param authPermissionRuleSaveReq
      * @param bindingResult
      * @return
      */
     @ApiOperation(value = "新增权限规则")
     @AuthRuleAnnotation("auth/permission_rule/save")
     @PostMapping("/auth/permission_rule/save")
-    public BaseResponse save(@RequestBody @Valid AuthPermissionRuleSaveRequest authPermissionRuleSaveRequest,
+    public BaseResponse save(@RequestBody @Valid AuthPermissionRuleSaveReq authPermissionRuleSaveReq,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
-        if (authPermissionRuleSaveRequest.getPid() == null) {
-            authPermissionRuleSaveRequest.setPid(0L); // 默认设置
+        if (authPermissionRuleSaveReq.getPid() == null) {
+            authPermissionRuleSaveReq.setPid(0L); // 默认设置
         }
         AuthPermissionRule authPermissionRule = new AuthPermissionRule();
-        BeanUtils.copyProperties(authPermissionRuleSaveRequest, authPermissionRule);
+        BeanUtils.copyProperties(authPermissionRuleSaveReq, authPermissionRule);
 
         boolean b = authPermissionRuleService.insertAuthPermissionRule(authPermissionRule);
         if (!b) {
@@ -83,28 +83,28 @@ public class AuthPermissionRuleController {
 
     /**
      * 编辑
-     * @param authPermissionRuleSaveRequest
+     * @param authPermissionRuleSaveReq
      * @param bindingResult
      * @return
      */
     @ApiOperation(value = "编辑权限规则")
     @AuthRuleAnnotation("auth/permission_rule/edit")
     @PostMapping("/auth/permission_rule/edit")
-    public BaseResponse edit(@RequestBody @Valid AuthPermissionRuleSaveRequest authPermissionRuleSaveRequest,
+    public BaseResponse edit(@RequestBody @Valid AuthPermissionRuleSaveReq authPermissionRuleSaveReq,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL, bindingResult.getFieldError().getDefaultMessage());
         }
 
-        if (authPermissionRuleSaveRequest.getId() == null) {
+        if (authPermissionRuleSaveReq.getId() == null) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL);
         }
 
-        authPermissionRuleSaveRequest.setPid(null); // 不能修改父级 pid
+        authPermissionRuleSaveReq.setPid(null); // 不能修改父级 pid
 
         AuthPermissionRule authPermissionRule = new AuthPermissionRule();
-        BeanUtils.copyProperties(authPermissionRuleSaveRequest, authPermissionRule);
+        BeanUtils.copyProperties(authPermissionRuleSaveReq, authPermissionRule);
 
         boolean b = authPermissionRuleService.updateAuthPermissionRule(authPermissionRule);
         if (!b) {
@@ -116,19 +116,19 @@ public class AuthPermissionRuleController {
 
     /**
      * 删除
-     * @param authPermissionRuleSaveRequest
+     * @param authPermissionRuleSaveReq
      * @return
      */
     @ApiOperation(value = "删除权限规则")
     @AuthRuleAnnotation("auth/permission_rule/delete")
     @PostMapping("/auth/permission_rule/delete")
-    public BaseResponse delete(@RequestBody AuthPermissionRuleSaveRequest authPermissionRuleSaveRequest) {
+    public BaseResponse delete(@RequestBody AuthPermissionRuleSaveReq authPermissionRuleSaveReq) {
 
-        if (authPermissionRuleSaveRequest.getId() == null) {
+        if (authPermissionRuleSaveReq.getId() == null) {
             return ResultVOUtils.error(ResultEnum.PARAM_VERIFY_FALL);
         }
 
-        boolean b = authPermissionRuleService.deleteById(authPermissionRuleSaveRequest.getId());
+        boolean b = authPermissionRuleService.deleteById(authPermissionRuleSaveReq.getId());
         if (!b) {
             return ResultVOUtils.error(ResultEnum.NOT_NETWORK);
         }

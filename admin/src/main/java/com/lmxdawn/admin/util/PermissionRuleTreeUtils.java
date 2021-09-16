@@ -1,7 +1,7 @@
 package com.lmxdawn.admin.util;
 
 import com.lmxdawn.admin.entity.auth.AuthPermissionRule;
-import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeResponse;
+import com.lmxdawn.admin.res.auth.AuthPermissionRuleMergeRes;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -15,20 +15,20 @@ public class PermissionRuleTreeUtils {
     /**
      * 多维数组
      */
-    public static List<AuthPermissionRuleMergeResponse> merge(List<AuthPermissionRule> authPermissionRuleList,
-                                                              Long pid) {
+    public static List<AuthPermissionRuleMergeRes> merge(List<AuthPermissionRule> authPermissionRuleList,
+                                                         Long pid) {
 
-        List<AuthPermissionRuleMergeResponse> authPermissionRuleMergeResponseList = new ArrayList<>();
+        List<AuthPermissionRuleMergeRes> authPermissionRuleMergeResList = new ArrayList<>();
         for (AuthPermissionRule v : authPermissionRuleList) {
-            AuthPermissionRuleMergeResponse authPermissionRuleMergeResponse = new AuthPermissionRuleMergeResponse();
-            BeanUtils.copyProperties(v, authPermissionRuleMergeResponse);
+            AuthPermissionRuleMergeRes authPermissionRuleMergeRes = new AuthPermissionRuleMergeRes();
+            BeanUtils.copyProperties(v, authPermissionRuleMergeRes);
             if (pid.equals(v.getPid())) {
-                authPermissionRuleMergeResponse.setChildren(merge(authPermissionRuleList, v.getId()));
-                authPermissionRuleMergeResponseList.add(authPermissionRuleMergeResponse);
+                authPermissionRuleMergeRes.setChildren(merge(authPermissionRuleList, v.getId()));
+                authPermissionRuleMergeResList.add(authPermissionRuleMergeRes);
             }
         }
 
-        return authPermissionRuleMergeResponseList;
+        return authPermissionRuleMergeResList;
     }
 
 

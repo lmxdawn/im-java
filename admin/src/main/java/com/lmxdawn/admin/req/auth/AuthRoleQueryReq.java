@@ -1,6 +1,6 @@
 package com.lmxdawn.admin.req.auth;
 
-import com.lmxdawn.admin.req.ListPageRequest;
+import com.lmxdawn.admin.req.ListPageReq;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @ApiModel
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AuthRoleQueryRequest extends ListPageRequest {
+public class AuthRoleQueryReq extends ListPageReq {
     @ApiModelProperty(value = "权限名称")
     private String name;
     @ApiModelProperty(value = "状态")
