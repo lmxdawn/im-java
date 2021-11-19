@@ -16,7 +16,7 @@ public class AuthAdminQueryReq extends ListPageReq {
     @ApiModelProperty(value = "用户名")
     private String username;
 
-    @ApiModelProperty(value = "状态（）")
+    @ApiModelProperty(value = "用户状态（0：禁用； 1：正常 ；2：未验证）")
     private Integer status;
 
     @ApiModelProperty(value = "角色ID列表")
