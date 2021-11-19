@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 public class AuthRoleQueryReq extends ListPageReq {
     @ApiModelProperty(value = "权限名称")
     private String name;
-    @ApiModelProperty(value = "状态")
+    @ApiModelProperty(value = "状态（1：正常，0：禁用）")
     private Integer status;
 
 }

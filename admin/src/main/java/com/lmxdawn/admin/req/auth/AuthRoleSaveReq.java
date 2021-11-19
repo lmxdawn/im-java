@@ -19,7 +19,7 @@ public class AuthRoleSaveReq {
     private String name;
     @ApiModelProperty(value = "权限上级ID")
     private Long pid;
-    @ApiModelProperty(value = "状态")
+    @ApiModelProperty(value = "状态（1：正常，0：禁用）")
     private Long status;
     @ApiModelProperty(value = "备注")
     private String remark;
